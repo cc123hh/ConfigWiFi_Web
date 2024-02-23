@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>WIFI
+            
+        </title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+    </head>
+    
+    <style type="text/css">
+        .input{display: block; margin-top: 10px;}
+        .input span{width: 100px; float: left; float: left; height: 36px; line-height: 36px;}
+        .input input{height: 30px;width: 200px;}
+        .btn{width: 120px; height: 35px; background-color: #000000; border:0px; color:#ffffff; margin-top:15px; margin-left:100px;}
+    </style>
+    
+    <body>
+        <h1>Configare WiFi</h1>
+        <div>
+            <label class="input">
+                <span>
+                    WiFi SSID  
+                </span>
+                <input type="text" id="ssid">
+            </label>
+            <label class="input">
+                <span>
+                    WiFi PWD
+                </span> 
+                <input type="text"  id="pass">
+            </label>
+            <button class="btn" type="submit" value="Submit" onclick="submit()">Submit</button>
+        </div>
+        <hr />
+            <p>
+                <p>Nearby wifi: &nbsp;&nbsp;<button onclick="getWifiList()">刷新</button></p>
+                <ol id="wifi_list">
+                    
+                </ol>
+            </p>
+        
+        <script>
+            getWifiList = ()=>{
+                let wf = document.getElementById("wifi_list")
+                const xhr = new XMLHttpRequest();
+                xhr.open('GET', 'http://192.168.4.1/scan');
+                xhr.onload = () => {
+                if (xhr.status === 200) {
+                    r = JSON.parse(xhr.responseText)
+                    wf.innerHTML= ""
+                    for(e of r){
+                        wf.innerHTML+="<li>"+e+"</li>"
+                    }
+                } else {
+                    console.error(`Error: ${xhr.status}`);
+                }
+                };
+                xhr.send();
+            }
+            submit = ()=>{
+                const xhr = new XMLHttpRequest();
+                xhr.open('POST', 'http://192.168.4.1/configareWifi');
+                xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+                xhr.onload = () => {
+                if (xhr.status === 200) {
+                    alert(xhr.responseText)
+                } else {
+                    console.error(`Error: ${xhr.status}`);
+                }
+                };
+                xhr.send(`ssid=${document.getElementById("ssid").value}&pwd=${document.getElementById("pass").value}`);
+            }
+            window.onload = ()=>{
+                getWifiList()
+            }
+        </script>
+    </body>
+</html>
+
