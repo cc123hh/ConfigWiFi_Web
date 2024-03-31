@@ -1,8 +1,8 @@
 import network,time,_thread
 from lib.microdot import Microdot,send_file,redirect
 
-wifi_ssid = "CJF-2.4G"
-wifi_pwd  = "cjfszy2002"
+wifi_ssid = ""
+wifi_pwd  = ""
 
 def wifi_connect():
     global wifi_ssid,wifi_pwd
